@@ -6,6 +6,8 @@
                     :data="oreoApp.appDom.value"
                     @select="oreoApp.onLayerTreeNode"
                     @del="oreoApp.onDelVirtualDom"
+                    @moveUp="oreoApp.onMoveUp"
+                    @moveDown="oreoApp.onMoveDown"
                 />
                 <BasicWidget
                     :data="oreoApp.widgets.value"
@@ -41,6 +43,7 @@
                         v-model:top="item.styles.top"
                         v-model:left="item.styles.left"
                         v-model:label="item.label"
+                        :zIndex="item.styles.zIndex"
                         :disable="oreoApp.disableDraResize.value"
                         :scale="oreoApp.scale.value"
                         @snapLine="oreoApp.onSnapLine"

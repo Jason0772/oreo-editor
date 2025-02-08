@@ -97,11 +97,54 @@ export const useMouseMenu = (oreoEvent: OreoEvent) => {
         }
     };
 
+
+    const onMenuMoveUp = () => {
+        if (!oreoEvent.curDom.value || oreoEvent.curDom.value.locked) return;
+        // 找到所有比当前元素层级高的元素中最小的那个
+        const currentZ = oreoEvent.curDom.value.styles.zIndex || 0;
+        const higherElements = oreoEvent.appDom.value.filter(
+            item => (item.styles.zIndex || 0) > currentZ
+        );
+        if (higherElements.length > 0) {
+            const minHigherZ = Math.min(...higherElements.map(item => item.styles.zIndex || 0));
+            oreoEvent.curDom.value.styles.zIndex = minHigherZ + 1;
+        } else {
+            // 如果没有更高层级，则加1
+            oreoEvent.curDom.value.styles.zIndex = currentZ + 1;
+        }
+    };
+
+    const onMenuMoveDown = () => {
+        if (!oreoEvent.curDom.value || oreoEvent.curDom.value.locked) return;
+        // 找到所有比当前元素层级低的元素中最大的那个
+        const currentZ = oreoEvent.curDom.value.styles.zIndex || 0;
+        const lowerElements = oreoEvent.appDom.value.filter(
+            item => (item.styles.zIndex || 0) < currentZ
+        );
+        if (lowerElements.length > 0) {
+            const maxLowerZ = Math.max(...lowerElements.map(item => item.styles.zIndex || 0));
+            oreoEvent.curDom.value.styles.zIndex = maxLowerZ - 1;
+        } else {
+            // 如果没有更低层级，则减1
+            oreoEvent.curDom.value.styles.zIndex = currentZ - 1;
+        }
+    };
+
     function onKeydown(event: KeyboardEvent) {
         if (!oreoEvent.curDom.value) return;
         if (oreoEvent.curDom.value.input) return;
         if (event.code === 'Backspace' || event.code === 'Delete') {
             onMenuDelete();
+        }
+
+        // 添加上下移动的快捷键
+        if (event.ctrlKey && event.code === 'ArrowUp') {
+            event.preventDefault();
+            onMenuMoveUp();
+        }
+        if (event.ctrlKey && event.code === 'ArrowDown') {
+            event.preventDefault();
+            onMenuMoveDown();
         }
     }
 
@@ -123,6 +166,8 @@ export const useMouseMenu = (oreoEvent: OreoEvent) => {
             onMenuLocked,
             onMenuGroup,
             onMenuDisbandGroup,
+            onMenuMoveUp,
+            onMenuMoveDown
         },
     };
 };
@@ -133,4 +178,6 @@ export interface MeneActions {
     onMenuLocked: () => void;
     onMenuGroup: () => void;
     onMenuDisbandGroup: () => void;
+    onMenuMoveUp: () => void;
+    onMenuMoveDown: () => void;
 }

@@ -35,6 +35,14 @@
             <div class="contextmenu_label">解除组合</div>
             <div class="contextmenu_desc">Shift + Ctrl + G</div>
         </div>
+        <div class="contextmenu_item" @click="actions.onMenuMoveUp">
+            <div class="contextmenu_label">上移</div>
+            <div class="contextmenu_desc">Ctrl + ↑</div>
+        </div>
+        <div class="contextmenu_item" @click="actions.onMenuMoveDown">
+            <div class="contextmenu_label">下移</div>
+            <div class="contextmenu_desc">Ctrl + ↓</div>
+        </div>
     </div>
 </template>
 <script lang="ts" setup>

@@ -83,6 +83,36 @@ const OreoApp = () => {
         rectEvent.rectWorkEventDown(mouseMode.draRact, e);
     };
 
+
+    // 添加上移下移方法
+    const onMoveUp = () => {
+        if (!curDom.value || curDom.value.locked) return;
+        const currentZ = curDom.value.styles.zIndex || 0;
+        const higherElements = appDom.value.filter(
+            item => (item.styles.zIndex || 0) > currentZ
+        );
+        if (higherElements.length > 0) {
+            const minHigherZ = Math.min(...higherElements.map(item => item.styles.zIndex || 0));
+            curDom.value.styles.zIndex = minHigherZ + 1;
+        } else {
+            curDom.value.styles.zIndex = currentZ + 1;
+        }
+    };
+
+    const onMoveDown = () => {
+        if (!curDom.value || curDom.value.locked) return;
+        const currentZ = curDom.value.styles.zIndex || 0;
+        const lowerElements = appDom.value.filter(
+            item => (item.styles.zIndex || 0) < currentZ
+        );
+        if (lowerElements.length > 0) {
+            const maxLowerZ = Math.max(...lowerElements.map(item => item.styles.zIndex || 0));
+            curDom.value.styles.zIndex = maxLowerZ - 1;
+        } else {
+            curDom.value.styles.zIndex = Math.max(0, currentZ - 1);
+        }
+    };
+
     const onPointerMove = (e: PointerEvent) => {
         // imageEvent.imageWorkEventMove(mouseMode.image, e);
         setPointerEventState(e, 'move');
@@ -358,6 +388,17 @@ const OreoApp = () => {
         if (isInput > -1) {
             return;
         }
+
+        // 添加上下移动的快捷键处理
+        if (event.ctrlKey) {
+            if (event.code === 'ArrowUp') {
+                event.preventDefault();
+                onMoveUp();
+            } else if (event.code === 'ArrowDown') {
+                event.preventDefault();
+                onMoveDown();
+            }
+        }
         if (event.code === 'Space' || event.code === 'Spacebar') {
             event.preventDefault();
 
@@ -425,6 +466,7 @@ const OreoApp = () => {
     // 添加测试图层数据
     appDom.value = testJson._rawValue as any;
 
+    console.log("testJson", testJson)
     const curPageDomstyles = computed(() => {
         let background = 'none';
         if (curPageDom.value.styles.fill) {
@@ -480,7 +522,8 @@ const OreoApp = () => {
         disableDraResize,
         onLayerTreeNode,
         jsonViewerVisible,
-
+        onMoveUp,      // 添加这行
+        onMoveDown,    // 添加这行
         curPageDomstyles,
         align,
         ...snapLineEvent,

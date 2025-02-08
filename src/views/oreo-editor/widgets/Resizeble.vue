@@ -67,6 +67,7 @@ const props = withDefaults(
         height: number;
         top: number;
         left: number;
+        zIndex: number;
         disable?: boolean | null;
         label?: string;
         scale?: number;
@@ -232,10 +233,10 @@ const styles = computed(() => {
     if (props.data.styles.shadow) {
         boxShadow = `${props.data.styles.shadowX} ${props.data.styles.shadowY}px ${props.data.styles.shadowBlur}px ${props.data.styles.shadowSpread}px ${props.data.styles.shadowColor}`;
     }
-    let zIndex: any = '';
-    if (props.data.active || props.data.input) {
-        zIndex = 1;
-    }
+    let zIndex: any = props.zIndex;
+    // if (props.data.active || props.data.input) {
+    //     zIndex = 1;
+    // }
 
     // 字体样式
     let fontStyle: any = {};

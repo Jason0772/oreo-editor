@@ -19,6 +19,7 @@ export const beaseDomStyle: ElementStyles = {
     opacity: 1,
     rotate: 0,
     radius: 0,
+    zIndex: 1,
 
     fill: true,
     background: '#999999',
@@ -200,6 +201,8 @@ export interface ElementStyles extends Shadow {
     borderWidth: string;
     borderStyle: 'solid' | 'dashed' | 'dotted';
     borderColor: string;
+
+    zIndex: number;
 }
 
 // 文本
