@@ -337,6 +337,11 @@
                 </a-row>
             </a-collapse-item>
             <!-- 图片样式结束 -->
+
+            <!-- 图标样式开始 -->
+            <a-collapse-item header="Post" key="5">
+                <Find></Find>
+            </a-collapse-item>
         </a-collapse>
     </div>
 </template>
@@ -345,6 +350,7 @@ import { computed } from 'vue';
 import type { VirtualDom } from '../hooks/enumTypes';
 import { VirtualDomType } from '../hooks/enumTypes';
 import type { AlignFun } from '../hooks/useAlign';
+import Find from "@/components/Find/index.vue";
 
 const props = withDefaults(
     defineProps<{

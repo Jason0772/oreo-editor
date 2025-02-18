@@ -26,7 +26,7 @@
             :color="props.data.boxSelect ? 'primary' : undefined"
             @click="onClick('arrow')"
         />
-        <v-btn
+        <!-- <v-btn
             variant="text"
             icon="mdi-card-outline"
             size="x-small"
@@ -46,8 +46,8 @@
             size="x-small"
             :color="props.data.image ? 'primary' : undefined"
             @click="onClick('image')"
-        />
-        <v-btn variant="text" icon="mdi-emoticon-outline" size="x-small" @click="onClick('icon')" />
+        /> -->
+        <!-- <v-btn variant="text" icon="mdi-emoticon-outline" size="x-small" @click="onClick('icon')" /> -->
         <v-btn
             variant="text"
             icon="mdi-hand-back-left-outline"

@@ -8,6 +8,7 @@
                     @del="oreoApp.onDelVirtualDom"
                     @moveUp="oreoApp.onMoveUp"
                     @moveDown="oreoApp.onMoveDown"
+                    @group="oreoApp.addTemplate"
                 />
                 <BasicWidget
                     :data="oreoApp.widgets.value"

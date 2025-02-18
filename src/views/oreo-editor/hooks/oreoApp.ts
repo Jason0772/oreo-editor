@@ -13,6 +13,7 @@ import { useRuler } from './useRuler';
 import { useBoxSelect } from './useBoxSelect';
 import { useSnapLine } from './useSnapLine';
 import { useTextInput } from './useTextInput';
+import { useTemplate } from './useTemplate';
 import { useUndoRedo } from './useUndoRedo';
 // 测试导出的数据
 import testJson from './test.json';
@@ -112,6 +113,10 @@ const OreoApp = () => {
             curDom.value.styles.zIndex = Math.max(0, currentZ - 1);
         }
     };
+
+    const onGroup = (item: VirtualDom) => {
+        console.log('onGroup', item)
+    }
 
     const onPointerMove = (e: PointerEvent) => {
         // imageEvent.imageWorkEventMove(mouseMode.image, e);
@@ -510,6 +515,7 @@ const OreoApp = () => {
     const imageEvent = useImage(oreoEvent);
     const rectEvent = useRect(oreoEvent);
     const boxSelectEvent = useBoxSelect(oreoEvent);
+    const templateEvent = useTemplate(oreoEvent);
 
     return {
         onPointerDown,
@@ -524,6 +530,7 @@ const OreoApp = () => {
         jsonViewerVisible,
         onMoveUp,      // 添加这行
         onMoveDown,    // 添加这行
+        onGroup,       //添加组
         curPageDomstyles,
         align,
         ...snapLineEvent,
@@ -536,6 +543,7 @@ const OreoApp = () => {
         ...imageEvent,
         ...rectEvent,
         ...boxSelectEvent,
+        ...templateEvent,
     };
 };
 export default OreoApp;

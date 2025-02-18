@@ -67,7 +67,7 @@ const props = withDefaults(
         height: number;
         top: number;
         left: number;
-        zIndex: number;
+        zIndex?: number;
         disable?: boolean | null;
         label?: string;
         scale?: number;

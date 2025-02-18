@@ -1,6 +1,9 @@
 import { type VNode, type RendererNode, type RendererElement, type Ref, h } from 'vue';
 import ChartArea from '../widgets/charts/ChartArea.vue';
 
+const S_W = 750;
+const S_H = 1334;
+
 export enum VirtualDomType {
     Group,
     Rect,
@@ -107,24 +110,24 @@ export const beaseDom: VirtualDom[] = [
         url: 'https://github.com/armomu/oreo-editor/raw/main/public/w.png',
         styles: { ...beaseDomStyle, imgFit: 'contain', fill: false, background: '#ffffff' },
     },
-    {
-        id: 5,
-        name: 'Chart',
-        groupId: 0,
-        icon: 'mdi-chart-areaspline',
-        type: VirtualDomType.Rect,
-        active: true,
-        visible: true,
-        selected: false,
-        locked: false,
-        disabled: false,
-        component: () =>
-            h(ChartArea, {
-                x: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                y: [31, 40, 28, 51, 42, 109, 100],
-            }),
-        styles: { ...beaseDomStyle, width: 540, height: 260, background: '#ffffff' },
-    },
+    // {
+    //     id: 5,
+    //     name: 'Chart',
+    //     groupId: 0,
+    //     icon: 'mdi-chart-areaspline',
+    //     type: VirtualDomType.Rect,
+    //     active: true,
+    //     visible: true,
+    //     selected: false,
+    //     locked: false,
+    //     disabled: false,
+    //     component: () =>
+    //         h(ChartArea, {
+    //             x: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+    //             y: [31, 40, 28, 51, 42, 109, 100],
+    //         }),
+    //     styles: { ...beaseDomStyle, width: 540, height: 260, background: '#ffffff' },
+    // },
 ];
 
 export const virtualGroup: VirtualDom = {
@@ -138,7 +141,7 @@ export const virtualGroup: VirtualDom = {
     selected: false,
     locked: false,
     disabled: false,
-    styles: { ...beaseDomStyle, background: '#ffffff', width: 1200, height: 1080 },
+    styles: { ...beaseDomStyle, background: '#ffffff', width: S_W, height: S_H },
 };
 
 export const pageDom: VirtualDom = {
@@ -152,7 +155,7 @@ export const pageDom: VirtualDom = {
     selected: false,
     locked: false,
     disabled: false,
-    styles: { ...beaseDomStyle, width: 1200, height: 1080, background: '#ffffff' },
+    styles: { ...beaseDomStyle, width: S_W, height: S_H, background: '#ffffff' },
 };
 
 export interface VirtualDom {

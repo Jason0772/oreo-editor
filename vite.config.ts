@@ -7,7 +7,7 @@ import vuetify from 'vite-plugin-vuetify';
 // https://vitejs.dev/config/
 export default defineConfig({
     // base: '/',
-    base: '/oreo-editor',
+    base: '/admin/immaker/',
     plugins: [
         vue(),
         // vueJsx(), 都用Vue还用什么JSX
@@ -18,14 +18,9 @@ export default defineConfig({
         host: '0.0.0.0',
         port: 9527,
         hmr: true,
-        // proxy: {
-        //     // 选项写法
-        //     '/api': {
-        //         target: 'xxxx',
-        //         changeOrigin: true,
-        //         rewrite: (path) => path.replace(/^\/api/, '')
-        //     }
-        // }
+        proxy: {
+            '/api/': { target: 'https://api.infomate.co.nz/', changeOrigin: true },
+        }
     },
     optimizeDeps: {
         exclude: ['@babylonjs/havok'],

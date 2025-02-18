@@ -2,6 +2,7 @@ import { ref, shallowRef, type Ref } from 'vue';
 import { cloneDeep } from 'lodash';
 import { beaseDom } from './enumTypes';
 import type { OreoEvent } from './enumTypes';
+import { onChooseFile } from '@/comm/tooler';
 
 export const useImage = (oreoEvent: OreoEvent) => {
     const imageFileRef = shallowRef<any>();
@@ -35,20 +36,31 @@ export const useImage = (oreoEvent: OreoEvent) => {
         // @ts-ignore
         const file = event.target?.files[0];
         if (!file) return;
-        const res = (await loadImage(file)) as HTMLImageElement;
+
+        // const res = (await loadImage(file)) as HTMLImageElement;
+        // if (isChange && oreoEvent.curDom.value) {
+        //     oreoEvent.curDom.value.url = res.src;
+        //     return;
+        // }
+
+        const res = (await onChooseFile(file)) as any;
         if (isChange && oreoEvent.curDom.value) {
-            oreoEvent.curDom.value.url = res.src;
+            oreoEvent.curDom.value.url = res;
             return;
         }
-        obj.url = res.src;
-        obj.styles.left = 500;
-        obj.styles.top = 500;
-        obj.styles.fill = false;
-        obj.styles.width = 216;
-        obj.styles.height = (res.height / res.width) * 216;
-        oreoEvent.curDom.value = obj;
-        oreoEvent.appDom.value.push(oreoEvent.curDom.value);
-        oreoEvent.onMouseMode('boxSelect');
+        
+
+
+
+        // obj.url = res.src;
+        // obj.styles.left = 500;
+        // obj.styles.top = 500;
+        // obj.styles.fill = false;
+        // obj.styles.width = 216;
+        // obj.styles.height = (res.height / res.width) * 216;
+        // oreoEvent.curDom.value = obj;
+        // oreoEvent.appDom.value.push(oreoEvent.curDom.value);
+        // oreoEvent.onMouseMode('boxSelect');
     };
 
     const loadImage = (file: Blob) => {
