@@ -3,7 +3,7 @@
 <template>
     <div class="customizes" @contextmenu.prevent="() => {}">
         <a-collapse
-            :default-active-key="['1', '2', '3', '4']"
+            :default-active-key="['1', '2', '3', '4', '5']"
             :bordered="false"
             :show-expand-icon="false"
             expand-icon-position="right"
@@ -310,6 +310,9 @@
                         <a-input-number v-model="styleData.fontStyle.shadowBlur" size="mini" />
                     </a-col>
                 </a-row>
+                <a-row :gutter="8" v-if="props.data">
+                    <textarea v-model="props.data.label" class="mt-3 p-2 border" style="width: 100%" rows="4"></textarea>
+                </a-row>
             </a-collapse-item>
             <!-- 文本样式结束 -->
             <!-- 图片样式开始 -->
@@ -339,8 +342,8 @@
             <!-- 图片样式结束 -->
 
             <!-- 图标样式开始 -->
-            <a-collapse-item header="Post" key="5">
-                <Find></Find>
+            <a-collapse-item v-if="showTmp" header="Post" key="5">
+                <Find @choose="onChoose" />
             </a-collapse-item>
         </a-collapse>
     </div>
@@ -360,7 +363,7 @@ const props = withDefaults(
     }>(),
     {}
 );
-const emit = defineEmits(['add-widget', 'image']);
+const emit = defineEmits(['add-widget', 'image', 'post']);
 const styleData = computed(() => {
     if (props.data) {
         return props.data;
@@ -373,6 +376,11 @@ const showExterior = computed(() => {
     if (props.data && props.data.type === VirtualDomType.Image) return false;
     if (props.data && props.data.type === VirtualDomType.Text) return false;
     return true;
+});
+
+const showTmp = computed(() => {
+    if (props.data && props.data.type === VirtualDomType.Group) return true;
+    return false;
 });
 
 const showImage = computed(() => {
@@ -389,4 +397,9 @@ const showText = computed(() => {
 const onImage = () => {
     emit('image');
 };
+
+const onChoose = (item: any) => {
+    console.log(props.data, item);
+    emit('post', item);
+}
 </script>

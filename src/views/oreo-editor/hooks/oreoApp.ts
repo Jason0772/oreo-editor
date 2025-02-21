@@ -19,6 +19,7 @@ import { useUndoRedo } from './useUndoRedo';
 import testJson from './test.json';
 
 const OreoApp = () => {
+    const dragTemp = ref<any>(null);
     // 所有图层
     const appDom = ref<VirtualDom[]>([]);
     // 已有的示例图层基础组件
@@ -371,6 +372,7 @@ const OreoApp = () => {
         for (let i = 0; i < appDom.value.length; i++) {
             appDom.value[i].selected = item.id === appDom.value[i].id;
         }
+        onVirtualDom(item);
     };
 
     function findUids(id: number) {
@@ -486,6 +488,32 @@ const OreoApp = () => {
         };
     });
 
+    const dropItem = ref<any>(null);
+    const viewDragStart = (item)=>{
+        console.log("dragStart", item)
+        dropItem.value = item;
+    }
+
+    const viewDragOver= (e)=>{
+        // console.log("dragOver", e)
+        e.preventDefault();
+    }
+
+    const viewDrop= (e)=>{
+        console.log("drop", e)
+        e.preventDefault();
+        if(dropItem.value){
+            if(dropItem.value.type === "temp"){
+                templateEvent.onTempDrop(e, dropItem.value);
+            }
+            else{
+                dragWidgetEvent.onDrop(e, dropItem.value);
+
+            }
+            
+        }
+    }
+
     const oreoEvent = {
         appDom,
         widgets,
@@ -518,6 +546,9 @@ const OreoApp = () => {
     const templateEvent = useTemplate(oreoEvent);
 
     return {
+        viewDragStart,
+        viewDragOver,
+        viewDrop,
         onPointerDown,
         onPointerMove,
         onPointerUp,

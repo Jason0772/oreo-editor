@@ -25,7 +25,7 @@ export const beaseDomStyle: ElementStyles = {
     zIndex: 1,
 
     fill: true,
-    background: '#999999',
+    background: '#fff',
 
     border: false,
     borderWidth: '1',
@@ -107,8 +107,9 @@ export const beaseDom: VirtualDom[] = [
         selected: false,
         locked: false,
         disabled: false,
-        url: 'https://github.com/armomu/oreo-editor/raw/main/public/w.png',
-        styles: { ...beaseDomStyle, imgFit: 'contain', fill: false, background: '#ffffff' },
+        // url: 'https://github.com/armomu/oreo-editor/raw/main/public/w.png',
+        url: './imgs/img.png',
+        styles: { ...beaseDomStyle, imgFit: 'contain', fill: false},
     },
     // {
     //     id: 5,
@@ -141,7 +142,7 @@ export const virtualGroup: VirtualDom = {
     selected: false,
     locked: false,
     disabled: false,
-    styles: { ...beaseDomStyle, background: '#ffffff', width: S_W, height: S_H },
+    styles: { ...beaseDomStyle, width: S_W, height: S_H },
 };
 
 export const pageDom: VirtualDom = {
@@ -155,7 +156,7 @@ export const pageDom: VirtualDom = {
     selected: false,
     locked: false,
     disabled: false,
-    styles: { ...beaseDomStyle, width: S_W, height: S_H, background: '#ffffff' },
+    styles: { ...beaseDomStyle, width: S_W, height: S_H },
 };
 
 export interface VirtualDom {
@@ -234,6 +235,7 @@ export interface BoundsInfo {
 }
 
 export interface OreoEvent {
+    dragTemp: Ref<any>,
     appDom: Ref<VirtualDom[]>;
     curDom: Ref<VirtualDom | undefined>;
     scale: Ref<number>;

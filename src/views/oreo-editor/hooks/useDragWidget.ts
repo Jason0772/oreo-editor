@@ -19,13 +19,14 @@ export const useDragWidget = (oreoEvent: OreoEvent) => {
     };
 
     // 定义一个名为 onDrop 的函数，接收一个 DragEvent 类型的参数
-    const onDrop = (e: DragEvent) => {
+    const onDrop = (e: DragEvent, dragingDom:any) => {
         // 打印 onDrop--- 和传入的参数
         console.log('onDrop---', e);
         // 阻止默认行为
         e.preventDefault();
+       
         // 如果 dragingDom 不存在，则返回
-        if (!dragingDom) return;
+        // if (!dragingDom) return;
         // @ts-ignore
         // 获取目标元素的矩形区域
         const divRect = e.target.getBoundingClientRect() as DOMRect;
@@ -39,7 +40,7 @@ export const useDragWidget = (oreoEvent: OreoEvent) => {
         dragingDom.styles.left = e.clientX + e.target.scrollLeft - divRect.left - 2020 - width / 2;
         dragingDom.id = new Date().getTime();
         oreoEvent.curDom.value = dragingDom;
-        oreoEvent.appDom.value.push(oreoEvent.curDom.value);
+        oreoEvent.appDom.value.push(dragingDom);
     };
 
     return {

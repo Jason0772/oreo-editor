@@ -25,7 +25,8 @@
                 </a-tree>
             </a-collapse-item>
             <a-collapse-item header="Templates" key="3">
-                <div v-for="tmp in tmps" class="boxs" :key="tmp.name" @click="onAdd(tmp)">
+                <div v-for="tmp in tmps" class="boxs" :key="tmp.name" draggable="true"
+                @dragstart="onDragstart(tmp)">
                     <component :is="tmp.component" :img="pic" />
                     <!-- <div>{{ tmp.name }}</div> -->
                 </div>
@@ -34,7 +35,7 @@
     </div>
 </template>
 <script lang="ts" setup>
-import { computed, h, ref } from 'vue';
+import { computed, h, ref, markRaw } from 'vue';
 import { IconDriveFile, IconDown, IconImage, IconFontColors } from '@arco-design/web-vue/es/icon';
 import { VIcon } from 'vuetify/components';
 import { VirtualDomType } from '../hooks/enumTypes';
@@ -60,42 +61,97 @@ const treeData = computed(() => {
     return res;
 });
 
+const onDragstart = (item: any) => {
+    console.log('dragstart', item);
+    emit('dragstart', item);
+}
+
 const onAdd = (item:any)=>{
     console.log(item);
     emit('group', item);
 }
-
+const titleWord = "This is a title text. Please modify the content as needed"
+const descWord = "This is a piece of content text under a specific topic. It covers certain specific information. Some of this information may not be clear enough or needs to be adjusted and improved according to specific situations, as well as the needs of the target audience"
+const titleStyle = {
+    fontSize: '20px',
+    fontWeight: 'bold',
+    color: '#333',
+}
+const descStyle = {
+    fontSize: '16px',
+    color: '#666',
+}
 const tmps = ref([
     {
+        type: "temp",
         name: '模版1',
-        component: tmp1,
+        component: markRaw(tmp1),
+        list: [
+            { name: "Text", label: titleWord, width: 300, height: 60, top: 0, left: 0, style: titleStyle },
+            { name: "Image", width: 300, height: 200, top: 100, left: 0 },
+            { name: "Text", label: descWord, width: 300, height: 100, top: 320, left: 0, style: descStyle },
+        ]
     },
     {
+        type: "temp",
         name: '模版2',
-        component: tmp2,
+        component: markRaw(tmp2),
+        list: [
+            { name: "Image", width: 300, height: 200, top: 0, left: 0 },
+            { name: "Text", label: titleWord, width: 300, height: 60, top: 240, left: 0, style: titleStyle },
+            { name: "Text", label: descWord, width: 300, height: 100, top: 320, left: 0, style: descStyle },
+        ]
     },
     {
+        type: "temp",
         name: '模版3',
-        component: tmp3,
+        component: markRaw(tmp3),
+        list: [
+            { name: "Image", width: 160, height: 200, top: 0, left: 0 },
+            { name: "Text", label: titleWord, width: 150, height: 60, top: 0, left: 180, style: titleStyle },
+            { name: "Text", label: descWord, width: 150, height: 100, top: 100, left: 180, style: descStyle },
+        ]
     },
     {
+        type: "temp",
         name: '模版4',
-        component: tmp4,
+        component: markRaw(tmp4),
+        list: [
+            { name: "Text", label: titleWord, width: 150, height: 60, top: 0, left: 0, style: titleStyle },
+            { name: "Text", label: descWord, width: 150, height: 100, top: 100, left: 0, style: descStyle },
+            { name: "Image", width: 160, height: 200, top: 0, left: 180 },
+        ]
     },
     {
+        type: "temp",
         name: '模版5',
-        component: tmp5,
+        component: markRaw(tmp5),
+        list: [
+            { name: "Image", width: 300, height: 240, top: 0, left: 0 },
+            { name: "Text", label: titleWord, width: 200, height: 60, top: 100, left: 50, align: 'center', style: titleStyle },
+            { name: "Text", label: descWord, width: 300, height: 40, top: 260, left: 0, style: descStyle },
+        ]
     },
     {
+        type: "temp",
         name: '模版6',
-        component: tmp6,
+        component: markRaw(tmp6),
+        list: [
+            { name: "Image", width: 300, height: 300, top: 0, left: 0 },
+            { name: "Text", label: titleWord, width: 200, height: 60, top: 100, left: 50, align: 'center', style: titleStyle },
+            { name: "Text", label: descWord, width: 300, height: 40, top: 260, left: 0, style: descStyle },
+        ]
     },
     {
+        type: "temp",
         name: '模版7',
-        component: tmp7,
+        component: markRaw(tmp7),
+        list: [
+            { name: "Image", width: 300, height: 300, top: 0, left: 0 },
+            { name: "Text", label: titleWord, width: 200, height: 60, top: 240, left: 50, align: 'center', style: titleStyle },
+        ]
     },
 ]);
-
 const selectedKeys = computed(() => {
     const ids = [];
     for (let i = 0; i < props.data.length; i++) {
@@ -106,7 +162,7 @@ const selectedKeys = computed(() => {
     return ids;
 });
 
-const emit = defineEmits(['select', 'del', 'moveUp', 'moveDown', 'group']);
+const emit = defineEmits(['select', 'del', 'moveUp', 'moveDown', 'group', 'dragstart']);
 
 // 添加上移下移方法
 const onMoveUp = (nodeData: TreeData) => {
@@ -204,6 +260,7 @@ const onExpand = (newExpandedKeys: string[], event: TreeEvent) => {
 };
 
 function buildTree(flatData: VirtualDom[], rootId: number) {
+
     const tree: TreeData[] = [];
     // 先找出当前层级的所有元素
     const currentLevelItems = flatData.filter(item => item.groupId === rootId);

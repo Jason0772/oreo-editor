@@ -9,10 +9,11 @@
                     @moveUp="oreoApp.onMoveUp"
                     @moveDown="oreoApp.onMoveDown"
                     @group="oreoApp.addTemplate"
+                    @dragstart="oreoApp.viewDragStart"
                 />
                 <BasicWidget
                     :data="oreoApp.widgets.value"
-                    @draging="oreoApp.onDraging"
+                    @draging="oreoApp.viewDragStart"
                     @addimg="oreoApp.onAddImage"
                 />
             </div>
@@ -25,8 +26,8 @@
                 @pointermove="oreoApp.onPointerMove"
                 @pointerup="oreoApp.onPointerUp"
                 @scroll="oreoApp.onWorkAreaScroll"
-                @dragover="oreoApp.onDragover"
-                @drop="oreoApp.onDrop"
+                @dragover="oreoApp.viewDragOver"
+                @drop="oreoApp.viewDrop"
                 :class="{
                     cursorText: oreoApp.mouseMode.text,
                     cursorCross: oreoApp.mouseMode.draRact,
@@ -89,6 +90,7 @@
                 :data="oreoApp.curDom.value"
                 :page-data="oreoApp.curPageDom.value"
                 :align="oreoApp.align"
+                @post="oreoApp.onPost"
                 @image="oreoApp.onCurImage"
             />
         </div>

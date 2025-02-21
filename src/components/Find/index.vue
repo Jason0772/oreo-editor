@@ -47,103 +47,79 @@
         </div>
     </div>
 </template>
-
-<script>
+<script setup>
 import { ref, computed, onMounted } from 'vue';
 import { getRequest } from '@/comm/request';
 
-export default {
-    setup() {
-        const loading = ref(false);
-        const searchQuery = ref(''); // 搜索框输入内容
-        const showResults = ref(false); // 是否显示下拉列表
-        const list = ref([
-            // { id: 1, title: "示例文章1" },
-            // { id: 2, title: "示例文章2" },
-            // { id: 3, title: "示例文章3" }
-        ]); // 数据列表
+const emit = defineEmits(['choose']);
 
-        const selectId = ref(null);
+const loading = ref(false);
+const searchQuery = ref(''); // 搜索框输入内容
+const showResults = ref(false); // 是否显示下拉列表
+const list = ref([]); // 数据列表
 
-        const selected = ref(null);
-        const items = ref([
-            // { id: "1", label: "汽车" },
-            // { id: "2", label: "高铁" },
-            // { id: "3", label: "飞机" }
-        ]);
+const selectId = ref(null);
 
-        onMounted(() => {
-            getRequest("/api/im/category/").then(res => {
-                console.log("res", res);
-                items.value = res.list
-            }).catch(err => {
-                console.log("err", err)
-            })
-        })
+const selected = ref(null);
+const items = ref([]);
 
-        const onSelect = (value) => {
-            const selectedItem = items.value.find(item => item.id === value);
-            console.log('选中的数据:', selectedItem);
-            selectId.value = selectedItem.id;
-            showResults.value = false;
-            searchQuery.value = '';
-        };
+onMounted(async () => {
+  try {
+    const res = await getRequest("/api/im/category/");
+    console.log("res", res);
+    items.value = res.list;
+  } catch (err) {
+    console.log("err", err);
+  }
+});
 
+const onSelect = (value) => {
+  const selectedItem = items.value.find(item => item.id === value);
+  console.log('选中的数据:', selectedItem);
+  selectId.value = selectedItem.id;
+  showResults.value = false;
+  searchQuery.value = '';
+};
 
-        // 过滤后的列表
-        const filteredList = computed(() => {
-            return list.value.filter((item) =>
-                item.title.toLowerCase().includes(searchQuery.value.toLowerCase())
-            );
-        });
+// 过滤后的列表
+const filteredList = computed(() => {
+  return list.value.filter((item) =>
+    item.title.toLowerCase().includes(searchQuery.value.toLowerCase())
+  );
+});
 
-        // 搜索方法
-        const search = () => {
-            showResults.value = true;
-            loading.value = true;
+// 搜索方法
+const search = async () => {
+  showResults.value = true;
+  loading.value = true;
 
-            const param = {
-                category: selectId.value
-            }
-            if (searchQuery.value !== '') {
-                param.q = searchQuery.value
-            }
+  const param = {
+    category: selectId.value
+  };
+  if (searchQuery.value !== '') {
+    param.q = searchQuery.value;
+  }
 
-            getRequest("/api/im/post/", param)
-                .then(res => {
-                    list.value = res.list
-                })
-                .finally(() => {
-                    loading.value = false;
-                });
-        };
+  try {
+    const res = await getRequest("/api/im/post/", param);
+    list.value = res.list;
+  } finally {
+    loading.value = false;
+  }
+};
 
-        // 清空搜索
-        const clearSearch = () => {
-            searchQuery.value = '';
-            showResults.value = false;
-        };
+// 清空搜索
+const clearSearch = () => {
+  searchQuery.value = '';
+  showResults.value = false;
+};
 
-        // 选择列表项
-        const selectItem = (item) => {
-            console.log('选中的列表项:', item);
-            searchQuery.value = item.title;
-            showResults.value = false;
-        };
-
-        return {
-            selected,
-            items,
-            onSelect,
-            searchQuery,
-            showResults,
-            filteredList,
-            search,
-            clearSearch,
-            selectItem,
-            loading
-        };
-    },
+// 选择列表项
+const selectItem = (item) => {
+  console.log('选中的列表项:', item);
+  searchQuery.value = item.title;
+  showResults.value = false;
+  emit('choose', item);
 };
 </script>
 

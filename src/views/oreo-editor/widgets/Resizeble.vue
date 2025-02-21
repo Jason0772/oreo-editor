@@ -40,7 +40,8 @@
                 :height="props.data.styles.height"
                 :fit="props.data.styles.imgFit"
                 :src="props.data?.url || undefined"
-                style="z-index: -1"
+                style="z-index: -1;"
+                :style="{...props.data.styles}"
             />
             <v-icon
                 v-if="props.data.type === 6"
@@ -220,6 +221,8 @@ const styles = computed(() => {
     ) {
         background = props.data.styles.background;
     }
+
+    
     let border = 'none';
     if (props.data.styles.border) {
         border =
@@ -245,8 +248,8 @@ const styles = computed(() => {
             ...props.data.fontStyle,
         };
         fontStyle.fontSize = props.data.fontStyle.fontSize + 'px';
-        fontStyle.lineHeight = '1';
-        // fontStyle.lineHeight = props.data.fontStyle.lineHeight + 'px';
+        // fontStyle.lineHeight = '1';
+        fontStyle.lineHeight = props.data.fontStyle.lineHeight ? props.data.fontStyle.lineHeight + 'px' : '1';
         if (props.data.fontStyle.shadow) {
             fontStyle.textShadow = `${props.data.fontStyle.shadowX}px ${props.data.fontStyle.shadowY}px ${props.data.fontStyle.shadowBlur}px ${props.data.fontStyle.shadowColor}`;
         }
@@ -287,3 +290,15 @@ const onMouser = (e: PointerEvent) => {
     emit('mouser', e, props.data);
 };
 </script>
+
+<style lang="scss" scoped>
+.arco-image{
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    img{
+        width: 100%;
+        height: 100%;
+    }
+}
+</style>
